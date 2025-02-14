@@ -177,6 +177,9 @@
     wl-clipboard-rs
     vscode.fhs
     meld
+    helix
+    obsidian
+    zellij
   ];
 
   environment.sessionVariables = {

@@ -13,12 +13,20 @@
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
+  systemd.services.systemd-suspend.environment.SYSTEMD_SLEEP_FREEZE_USER_SESSIONS = "false";
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.luks.devices."luks-d5c4c335-8614-4c25-89cb-fb527c0b8939".device = "/dev/disk/by-uuid/d5c4c335-8614-4c25-89cb-fb527c0b8939";
   networking.hostName = "nixy-laptop"; # Define your hostname.
   # Pick only one of the below networking options.
-  networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  # networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  networking = {
+    networkmanager = {
+      enable = lib.mkDefault true;
+      wifi.backend = lib.mkForce "iwd";
+    };
+    wireless.iwd.enable = lib.mkForce true;
+  };
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
@@ -42,8 +50,7 @@
     LC_TELEPHONE = "de_DE.UTF-8";
     LC_TIME = "de_DE.UTF-8";
   };
-  console.keyMap = "de";
-  useXkbConfig = true; # use xkb.options in tty.
+  # console.keyMap = "de";
   # };
 
   # Enable the X11 windowing system.
@@ -59,6 +66,7 @@
     layout = "de";
     variant = "";
   };
+  console.useXkbConfig = true; # use xkb.options in tty.
   # services.xserver.xkb.options = "eurosign:e,caps:escape";
 
   # Enable CUPS to print documents.
@@ -178,6 +186,9 @@
     wl-clipboard-rs
     vscode.fhs
     meld
+    helix
+    obsidian
+    zellij
   ];
 
   environment.sessionVariables = {

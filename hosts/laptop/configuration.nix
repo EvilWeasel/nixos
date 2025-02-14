@@ -14,9 +14,10 @@
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  networking.hostName = "nixy-desktop"; # Define your hostname.
+  boot.initrd.luks.devices."luks-d5c4c335-8614-4c25-89cb-fb527c0b8939".device = "/dev/disk/by-uuid/d5c4c335-8614-4c25-89cb-fb527c0b8939";
+  networking.hostName = "nixy-laptop"; # Define your hostname.
   # Pick only one of the below networking options.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
@@ -64,7 +65,7 @@
   services.printing.enable = true;
 
   # Enable bluetooth
-  # hardware.bluetooth.enable = true;
+  hardware.bluetooth.enable = true;
 
   # Enable sound with pipewire.
   hardware.pulseaudio.enable = false;
@@ -78,7 +79,7 @@
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
-  # services.libinput.enable = true;
+  services.libinput.enable = true;
 
   services.flatpak.enable = true;
 
@@ -199,25 +200,6 @@
 
   # nvidia settings
   services.xserver.videoDrivers = ["nvidia"];
-  # nvidia settings for pascal era card
-  hardware.nvidia = {
-    # Modesetting required for wayland
-    modesetting.enable = true;
-
-    # No power management if possible
-    powerManagement.enable = false;
-    # Fine-grained power management; does only work for nvidia-open
-    powerManagement.finegrained = false;
-
-    # Open driver for turing+
-    open = false;
-
-    # Enable settings menu via `nvidia-settings`
-    nvidiaSettings = true;
-
-    # Option: select driver version manually
-    # package = config.boot.kernelPackages.nvidiaPackages.stable;
-  };
 
   hardware.graphics = {
     enable = true;

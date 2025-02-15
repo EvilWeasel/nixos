@@ -41,8 +41,9 @@
     LC_TELEPHONE = "de_DE.UTF-8";
     LC_TIME = "de_DE.UTF-8";
   };
-  console.keyMap = "de";
-  useXkbConfig = true; # use xkb.options in tty.
+  # console.keyMap = "de";
+  console.useXkbConfig = true; # use xkb.options in tty.
+
   # };
 
   # Enable the X11 windowing system.
@@ -67,7 +68,7 @@
   # hardware.bluetooth.enable = true;
 
   # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -145,41 +146,45 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    vim
+    vimHugeX # vim with clipboard-support compiled
     wget
     alacritty
     sl
     tree
-    kitty
+    kitty # hyprland default term
     google-chrome
     mangohud
-    protonup
+    protonup # to install protonGE
     lutris
     heroic
     bottles
     lshw-gui
-    yazi
+    yazi # terminal file manager
     ffmpeg
     jq
     poppler
     fd
     ripgrep
     fzf
-    zoxide
+    zoxide # modern cd replacement
     imagemagick
-    starship
+    starship # cross-shell and cross-platform prompt
     qbittorrent
     git
     gnupg
     cowsay
-    microsoft-edge
+    microsoft-edge # work-browser
     lolcat
-    wl-clipboard-rs
-    vscode.fhs
-    meld
+    wl-clipboard-rs # wayland system clipboard support
+    vscode.fhs # vscode without hassle of deklaritivly configuring plugins in nixconf
+    meld # visual diff tool
     helix
-    obsidian
-    zellij
+    obsidian # graphical markdown notes editor
+    zellij # tmux with sensible defaults and better ux
+    gcc
+    dotnetCorePackages.dotnet_9.sdk
+    dotnetCorePackages.dotnet_9.runtime
+    rustup
   ];
 
   environment.sessionVariables = {

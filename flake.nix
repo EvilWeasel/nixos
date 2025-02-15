@@ -5,6 +5,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     stylix.url = "github:danth/stylix";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    nvf.url = "github:notashelf/nvf";
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -12,8 +13,15 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixos-hardware, ... }@inputs: {
-    nixosConfigurations.default = nixpkgs.lib.nixosSystem {
+  outputs = { self, nixpkgs, nixos-hardware, nvf, ... }@inputs: {
+    packages.x86_64-linux.evilnvim =
+      (nvf.lib.neovimConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        modules = [ ./packages/nvf-configuration.nix ];
+      }).neovim;
+
+    # desktop config
+    nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
       specialArgs = {inherit inputs;};
       modules = [
         ./hosts/default/configuration.nix
@@ -21,6 +29,8 @@
         inputs.stylix.nixosModules.stylix
       ];
     };
+
+    # laptop config (lenovo yoga slim 7i pro x)
     nixosConfigurations.laptop = nixpkgs.lib.nixosSystem {
       specialArgs = {inherit inputs;};
       modules = [

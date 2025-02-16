@@ -22,7 +22,7 @@
 
     # desktop config
     nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
-      specialArgs = {inherit inputs;};
+      specialArgs = {inherit inputs; inherit self;};
       modules = [
         ./hosts/desktop/configuration.nix
         inputs.home-manager.nixosModules.default
